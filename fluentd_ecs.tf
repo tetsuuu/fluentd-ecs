@@ -45,3 +45,35 @@ data "template_file" "fluentd-ecs-userdata" {
     cluster_name = "${aws_ecs_cluster.fluentd-cluster.name}"
   }
 }
+
+resource "aws_iam_instance_profile" "fluentd-ecs" {
+  depends_on = ["aws_iam_role.fluentd-ecs"]
+  name       = "${var.aws_region}-fluentd-ecs"
+  role       = "${aws_iam_role.fluentd-ecs.name}"
+}
+
+resource "aws_iam_role" "fluentd-ecs" {
+  name = "${var.aws_region}-fluentd-ecs"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy_attachment" "fluentd-ecs" {
+  depends_on = ["aws_iam_role.fluentd-ecs"]
+  role       = "${aws_iam_role.fluentd-ecs.id}"
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
+}
