@@ -73,7 +73,7 @@ resource "aws_security_group" "default" {
     cidr_blocks = ["10.0.0.0/16"]
   }
 
-    # Fluenrd access from the VPC
+  # Fluenrd access from the VPC
   ingress {
     from_port   = 24224
     to_port     = 24224

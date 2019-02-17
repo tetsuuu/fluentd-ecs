@@ -38,6 +38,7 @@ resource "aws_autoscaling_group" "fluentd-ecs" {
     ignore_changes        = ["desired_capacity"]
   }
 }
+
 data "template_file" "fluentd-ecs-userdata" {
   template = "${file("./cluster_ecs.sh")}"
 

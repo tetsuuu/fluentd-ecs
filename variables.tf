@@ -10,7 +10,7 @@ DESCRIPTION
 
 variable "common_key" {
   description = "Desired name of AWS key pair"
-  default    = "own_key"
+  default     = "own_key"
 }
 
 variable "aws_region" {
